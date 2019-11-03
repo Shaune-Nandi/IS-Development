@@ -14,5 +14,5 @@ if($_POST['payment_type'] == 'Wallet'){
 	$sql = "UPDATE wallet_details SET balance = $balance WHERE wallet_id = $wallet_id;";
 	$con->query($sql);
 }
-header("location: ../orders.php");
+header("location: ./../orders/orders.php");
 ?>

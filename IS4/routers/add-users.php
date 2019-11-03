@@ -14,13 +14,13 @@ function number($length) {
 $username = $_POST['username'];
 $password = $_POST['password'];
 $name = $_POST['name'];
+$sname = $_POST['sname'];
 $email = $_POST['email'];
 $contact = $_POST['contact'];
-$address = $_POST['address'];
 $role = $_POST['role'];
 $verified = $_POST['verified'];
 $deleted = $_POST['deleted'];
-$sql = "INSERT INTO users (username, password, name, email, contact, address, role, verified, deleted) VALUES ('$username', '$password', '$name', '$email', $contact, '$address', '$role', $verified, $deleted)";
+$sql = "INSERT INTO users (username, password, name, surname, email, contact, role, verified, deleted) VALUES ('$username', '$password', '$name', '$sname', '$email', '$contact', '$role', $verified, $deleted)";
 if($con->query($sql)==true){
 $user_id =  $con->insert_id;
 $sql = "INSERT INTO wallet(customer_id) VALUES ($user_id)";

@@ -12,7 +12,7 @@ if ($_SESSION['admin_sid'] == session_id()) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-    <link rel="icon" href="./../logo/favicon.ico" type="image/ico">
+    <link rel="icon" href="images/logo/favicon.ico" type="image/ico">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./../css/cafeteria.css" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Londrina+Shadow' rel='stylesheet' type='text/css'>
@@ -31,8 +31,8 @@ if ($_SESSION['admin_sid'] == session_id()) {
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">
-        <img src="./../logo/logo.png" class="img-fluid" width="30px"><strong>Strath Café</strong>
+      <a class="navbar-brand" href="admin-page.php">
+        <img src="/images/logo/logo.png" class="img-fluid" width="30px"><strong>Strath Café</strong>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -40,13 +40,10 @@ if ($_SESSION['admin_sid'] == session_id()) {
       <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="admin-page.php">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./../about.html">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contacts</a>
+            <a class="nav-link" href="about/about.html">About</a>
           </li>
         </ul>
     </nav>
@@ -74,7 +71,7 @@ if ($_SESSION['admin_sid'] == session_id()) {
                 <li><a href="orders.php">
                     <div class="bg-light">All</div>
                   </a></li>
-                <hr>
+                
                 <?php
                   $sql = mysqli_query($con, "SELECT DISTINCT status FROM orders;");
                   while ($row = mysqli_fetch_array($sql)) {
@@ -102,117 +99,114 @@ if ($_SESSION['admin_sid'] == session_id()) {
         <div class="col-md-9 border rounded-right">
 
 
-          <div class="card" style="width: 18rem;">
-          <h5 class="card-title">Card title</h5>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-
-
-
-
-
-
-
           <h1><strong>USERS</strong></h1>
           <hr>
           <form class="formValidate" id="formValidate1" method="post" action="routers/user-router.php" novalidate="novalidate">
-              <div>
 
-                    <?php
-                      $result = mysqli_query($con, "SELECT * FROM users");
-                      while ($row = mysqli_fetch_array($result)) {
-                        echo '<div class="card"><div class="card-title text-center bg-light">';
-                        echo '<h5>' . $row["name"] . '</h5>';
-                        echo '<p>' . $row["email"] . '</p></div>';
-                        echo '<div class="card-body">';
-                        echo '<p>' . $row["contact"] . '</p>';
-                        echo '<p><select name="' . $row['id'] . '_role">
+              <?php
+                $result = mysqli_query($con, "SELECT * FROM users");
+                while ($row = mysqli_fetch_array($result)) {
+                  echo '<div class="card"><div class="card-body text-center bg-light">';
+                  echo '<h5>' . $row["name"] . '</h5>';
+                  echo '<p>' . $row["email"] . '</p></div>';
+                  echo '<div class="card-body">';
+                  echo '<p>' . $row["contact"] . '</p>';
+                  echo '<p><select name="' . $row['id'] . '_role">
                       <option value="Administrator"' . ($row['role'] == 'Administrator' ? 'selected' : '') . '>Administrator</option>
                       <option value="Customer"' . ($row['role'] == 'Customer' ? 'selected' : '') . '>Customer</option>
                     </select></p>';
-                        echo '<p><select name="' . $row['id'] . '_verified">
+                  echo '<p><select name="' . $row['id'] . '_verified">
                       <option value="1"' . ($row['verified'] ? 'selected' : '') . '>Verified</option>
                       <option value="0"' . (!$row['verified'] ? 'selected' : '') . '>Not Verified</option>
                     </select></p>';
-                        echo '<p><select name="' . $row['id'] . '_deleted">
+                  echo '<p><select name="' . $row['id'] . '_deleted">
                       <option value="1"' . ($row['deleted'] ? 'selected' : '') . '>Disable</option>
                       <option value="0"' . (!$row['deleted'] ? 'selected' : '') . '>Enable</option>
                     </select></p>';
-                        $key = $row['id'];
-                        $sql = mysqli_query($con, "SELECT * from wallet WHERE customer_id = $key;");
-                        if ($row1 = mysqli_fetch_array($sql)) {
-                          $wallet_id = $row1['id'];
-                          $sql1 = mysqli_query($con, "SELECT * from wallet_details WHERE wallet_id = $wallet_id;");
-                          if ($row2 = mysqli_fetch_array($sql1)) {
-                            $balance = $row2['balance'];
-                          }
-                        }
-                        echo '<p><label for="balance">Credit Balance</label><input id="balance" name="' . $row['id'] . '_balance" value="' . $balance . '" type="number" data-error=".errorTxt01"><div class="errorTxt01"></p>';
-                      echo '</div></div></div><br><hr><br>';
-                      }
-                      ?>
-              </div>
-                <button class="btn btn-outline-primary w-100" type="submit" name="action">Modify
-                </button>
-                <br><br><hr>
+                  $key = $row['id'];
+                  $sql = mysqli_query($con, "SELECT * from wallet WHERE customer_id = $key;");
+                  if ($row1 = mysqli_fetch_array($sql)) {
+                    $wallet_id = $row1['id'];
+                    $sql1 = mysqli_query($con, "SELECT * from wallet_details WHERE wallet_id = $wallet_id;");
+                    if ($row2 = mysqli_fetch_array($sql1)) {
+                      $balance = $row2['balance'];
+                    }
+                  }
+                  echo '<p><label for="balance">Credit Balance</label><input id="balance" name="' . $row['id'] . '_balance" value="' . $balance . '" type="number">';
+                  echo '</div></div><br><hr><br>';
+                }
+                ?>
+            <button class="btn btn-outline-primary w-100" type="submit" name="action">Modify
+            </button>
+            <br><br>
+            <hr>
+            <hr>
+            <hr>
+            <hr>
+            <hr>
+            <hr>
           </form>
-          <form class="formValidate" id="formValidate" method="post" action="routers/add-users.php" novalidate="novalidate">
-              <div class="col s12 m4 l3">
-                <h4 class="header">Add User</h4>
-              </div>
-              <div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th data-field="name">Username</th>
-                      <th data-field="name">Password</th>
-                      <th data-field="name">Name</th>
-                      <th data-field="price">Email</th>
-                      <th data-field="price">Phone number</th>
-                      <th data-field="price">Address</th>
-                      <th data-field="price">Role</th>
-                      <th data-field="price">Verified</th>
-                      <th data-field="price">Enable</th>
-                    </tr>
-                  </thead>
 
-                  <tbody>
-                    <?php
-                      echo '<tr><td><label for="username">Username</label><input id="username" name="username" type="text" data-error=".errorTxt02"><div class="errorTxt02"></div></td>';
-                      echo '<td><label for="password">Password</label><input id="password" name="password" type="password" data-error=".errorTxt03"><div class="errorTxt03"></div></td>';
-                      echo '<td><label for="name">Name</label><input id="name" name="name" type="text" data-error=".errorTxt04"><div class="errorTxt04"></div></td>';
-                      echo '<td><label for="email">Email</label><input id="email" name="email" type="email"></td>';
-                      echo '<td><label for="contact">Phone number</label><input id="contact" name="contact" type="number" data-error=".errorTxt05"><div class="errorTxt05"></div></td>';
-                      echo '<td><label for="address">Address</label><input id="address" name="address" type="text" data-error=".errorTxt06"><div class="errorTxt06"></div></td>';
-                      echo '<td><select name="role">
-                      <option value="Administrator">Administrator</option>
-                      <option value="Customer" selected>Customer</option>
-                    </select></td>';
-                      echo '<td><select name="verified">
-                      <option value="1">Verified</option>
-                      <option value="0" selected>Not Verified</option>
-                    </select></td>';
-                      echo '<td><select name="deleted">
-                      <option value="1">Disable</option>
-                      <option value="0" selected>Enable</option>
-                    </select></td></tr>';
-                      ?>
-                  </tbody>
-                </table>
-              </div>
-              <div class="input-field col s12">
-                <button class="btn cyan waves-effect waves-light right" type="submit" name="action">Add
-                  <i class="mdi-content-send right"></i>
+          <div class="card">
+            <div class="card-body">
+              <form class="formValidate" id="formValidate" method="post" action="routers/add-users.php" novalidate="novalidate">
+                <center>
+                  <h4 class="header">Add User</h4>
+                </center>
+
+                <?php
+                  echo '
+                    <div>
+                        <label for="username">Username</label>
+                          <input id="username" name="username" type="text">
+                          </div>
+                        <div>
+                            <label for="password">Password</label>
+                            <input id="password" name="password" type="password">
+                        </div>
+                        <div>
+                            <label for="name">First Name</label>
+                            <input id="name" name="name" type="text">
+                        </div>
+                        <div>
+                            <label for="sname">Last Name</label>
+                            <input id="sname" name="sname" type="text">
+                        </div>
+                        <div>
+                            <label for="email">Email</label>
+                            <input id="email" name="email" type="email">
+                        </div>
+                        <div>
+                            <label for="contact">Phone number</label>
+                            <input id="contact" name="contact" type="number">
+                        </div>
+                        <div>
+                            <select name="role">
+                                <option value="Administrator">Administrator</option>
+                                <option value="Customer" selected>Customer</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select name="verified">
+                                <option value="1">Verified</option>
+                                <option value="0" selected>Not Verified</option>
+                            </select>
+                        <div>
+                        </div>
+                            <select name="deleted">
+                                <option value="1">Disable</option>
+                                <option value="0" selected>Enable</option>
+                            </select>
+                        </div><br>
+                    ';
+                  ?>
+
+
+                <button class="btn btn-outline-primary w-100" type="submit" name="action">Add
                 </button>
-              </div>
-          </form>
-          <div class="divider"></div>
-
-
+            </div>
+            </form>
+          </div><br>
         </div>
       </div>
     </div>

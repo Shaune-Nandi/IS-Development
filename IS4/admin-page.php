@@ -12,11 +12,11 @@ if ($_SESSION['admin_sid'] == session_id()) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-    <link rel="icon" href="./../logo/favicon.ico" type="image/ico">
+    <link rel="icon" href="images/logo/favicon.ico" type="image/ico">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./../css/cafeteria.css" type="text/css" />
     <link href='https://fonts.googleapis.com/css?family=Londrina+Shadow' rel='stylesheet' type='text/css'>
-    <title>Home</title>
+    <title>Home-Admin</title>
 
     <style>
       h1 {
@@ -31,8 +31,8 @@ if ($_SESSION['admin_sid'] == session_id()) {
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">
-          <img src="./../logo/logo.png" class="img-fluid" width="30px"><strong>Strath Café</strong>
+      <a class="navbar-brand" href="admin-page.php">
+          <img src="images/logo/logo.png" class="img-fluid" width="30px"><strong>Strath Café</strong>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -40,13 +40,10 @@ if ($_SESSION['admin_sid'] == session_id()) {
       <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="admin-page.php">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./../about.html">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contacts</a>
+            <a class="nav-link" href="about/about.html">About</a>
           </li>
         </ul>
     </nav>
@@ -72,10 +69,10 @@ if ($_SESSION['admin_sid'] == session_id()) {
             <div class="bg-light" onclick="myFunction()"><br>View Orders<br></div>
             <div style="display: none;" id="myDIV">
               <ul>
-                <li><a href="orders.php">
+                <li><a href="all-orders.php">
                     <div class="bg-light">All</div>
                   </a></li>
-                <hr>
+                
                 <?php
 									$sql = mysqli_query($con, "SELECT DISTINCT status FROM orders;");
 									while($row = mysqli_fetch_array($sql)){
@@ -91,7 +88,7 @@ if ($_SESSION['admin_sid'] == session_id()) {
             <div class="bg-light"><br>All Users<br></div>
           </a>
           <hr>
-          <a href="routers/logout.php">
+          <a href="authentication/logout.php">
             <div class="bg-light"><br>Logout<br></div>
           </a>
           <hr>

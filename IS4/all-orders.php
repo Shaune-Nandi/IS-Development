@@ -10,7 +10,7 @@ if ($_SESSION['admin_sid'] == session_id()) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-        <link rel="icon" href="./../logo/favicon.ico" type="image/ico">
+        <link rel="icon" href="images/logo/favicon.ico" type="image/ico">
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="./../css/cafeteria.css" type="text/css" />
         <link href='https://fonts.googleapis.com/css?family=Londrina+Shadow' rel='stylesheet' type='text/css'>
@@ -29,8 +29,8 @@ if ($_SESSION['admin_sid'] == session_id()) {
 
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">
-                <img src="./../logo/logo.png" class="img-fluid" width="30px"><strong>Strath Café</strong>
+            <a class="navbar-brand" href="admin-page.php">
+                <img src="images/logo/logo.png" class="img-fluid" width="30px"><strong>Strath Café</strong>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -38,13 +38,10 @@ if ($_SESSION['admin_sid'] == session_id()) {
             <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="admin-page.php">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./../about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contacts</a>
+                        <a class="nav-link" href="about/about.html">About</a>
                     </li>
                 </ul>
         </nav>
@@ -69,10 +66,9 @@ if ($_SESSION['admin_sid'] == session_id()) {
                         <div class="bg-light" onclick="myFunction()"><br>View Orders<br></div>
                         <div style="display: none;" id="myDIV">
                             <ul>
-                                <li><a href="orders.php">
+                                <li><a href="all-orders.php">
                                         <div class="bg-light">All</div>
                                     </a></li>
-                                <hr>
                                 <?php
                                     $sql = mysqli_query($con, "SELECT DISTINCT status FROM orders;");
                                     while ($row = mysqli_fetch_array($sql)) {
@@ -119,11 +115,12 @@ if ($_SESSION['admin_sid'] == session_id()) {
                                 $status = $row['status'];
                                 $deleted = $row['deleted'];
                                 echo '
-                                <div class="card"><h5 class="card-title text-center bg-light border-bottom">
+                                <div class="card"><h5 class="card-body text-center bg-light border-bottom">
                               <p>Order ID: ' . $row['id'] . '</p>
-                              <p>' . $row['date'] . '</p>
+                              <p>' . $row['date'] . '</p></h5>
                             						  
-                                <p><strong>Status:</strong> ' . ($deleted ? $status : '
+                              <div class="card-body">  
+                              <p><strong>Status:</strong> ' . ($deleted ? $status : '
                                     <form method="post" action="routers/edit-orders.php">
                                     <input type="hidden" value="' . $row['id'] . '" name="id">
                                     <select name="status">
@@ -131,9 +128,8 @@ if ($_SESSION['admin_sid'] == session_id()) {
                                         <option value="Delivered" ' . ($status == 'Delivered' ? 'selected' : '') . '>Delivered</option>
                                         <option value="Cancelled by Admin" ' . ($status == 'Cancelled by Admin' ? 'selected' : '') . '>Cancelled by Admin</option>
                                         <option value="Paused" ' . ($status == 'Paused' ? 'selected' : '') . '>Paused</option>								
-                                    </select>
+                                    </select><br>
                                     ');
-                                    echo '</h5>';
 
                                 
 
@@ -143,8 +139,9 @@ if ($_SESSION['admin_sid'] == session_id()) {
                                 $sql3 = mysqli_query($con, "SELECT * FROM users WHERE id = $customer_id;");
                                 while ($row3 = mysqli_fetch_array($sql3)) {
                                     echo '
-							<p><strong>Ordered by: </strong>' . $row3['name'] . '</p><br>	
-							' . ($row3['email'] == '' ? '' : '<p><strong>Email: </strong>' . $row3['email'] . '</p><br>') . '							
+							<br><strong>Ordered by: </strong>' . $row3['name'] . '<br>	
+                            ' . ($row3['email'] == '' ? '' : '<br>
+                            <strong>Email: </strong>' . $row3['email'] . '</p><br>') . '							
                             ';
                                 }
                                 echo '
@@ -175,11 +172,11 @@ if ($_SESSION['admin_sid'] == session_id()) {
                                 echo '
                                     <p><strong>Total: Ksh ' . $row['total'] . '</strong></p>';
                                 if (!$deleted) {
-                                    echo '<button class="btn btn-outline-primary" type="submit" name="action">Change Status
+                                    echo '<button class="btn btn-outline-primary w-100" type="submit" name="action">Change Status
 										</button><br>
 										</form>';                                
                                         
-                                }echo '</div>';echo '<br><hr><br>';
+                                }echo '</div></div>';echo '<br><hr><br>';
                             }
                             ?>
 

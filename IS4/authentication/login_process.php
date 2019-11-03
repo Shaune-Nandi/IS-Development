@@ -21,7 +21,7 @@ if($success == true)
 	$_SESSION['role'] = $role;
 	$_SESSION['name'] = $name;
 
-	header("location: ./../admin/admin_home.php");
+	header("location: ./../admin-page.php");
 }
 else
 {

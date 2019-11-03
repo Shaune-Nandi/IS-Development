@@ -12,7 +12,7 @@ if ($_SESSION['customer_sid'] == session_id()) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-        <link rel="icon" href="images/logo/favicon.ico" type="image/ico">
+        <link rel="icon" href="./../images/logo/favicon.ico" type="image/ico">
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="./../css/cafeteria.css" type="text/css" />
         <link href='https://fonts.googleapis.com/css?family=Londrina+Shadow' rel='stylesheet' type='text/css'>
@@ -31,10 +31,8 @@ if ($_SESSION['customer_sid'] == session_id()) {
 
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">
-                <li>
-                    <img src="./../logo/logo.png" class="img-fluid" width="30px"><strong>Strath Café</strong>
-                </li>
+            <a class="navbar-brand" href="./../home/index.php">
+                <img src="./../images/logo/logo.png" class="img-fluid" width="30px"><strong>Strath Café</strong>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -42,7 +40,7 @@ if ($_SESSION['customer_sid'] == session_id()) {
             <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="./../home/index.php">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./../about.html">About</a>
@@ -104,89 +102,81 @@ if ($_SESSION['customer_sid'] == session_id()) {
                     <hr>
 
 
-                        <!--editableTable-->
-                        <div id="work-collections" class="seaction">
+                    <!--editableTable-->
 
-                            <?php
-                                if (isset($_GET['status'])) {
-                                    $status = $_GET['status'];
-                                } else {
-                                    $status = '%';
+
+                    <?php
+                        if (isset($_GET['status'])) {
+                            $status = $_GET['status'];
+                        } else {
+                            $status = '%';
+                        }
+                        $sql = mysqli_query($con, "SELECT * FROM orders WHERE customer_id = $user_id AND status LIKE '$status';;");
+
+                        while ($row = mysqli_fetch_array($sql)) {
+                            $status = $row['status'];
+                            echo '<div class="card">
+                                    <div class="card-body">
+                              <p><strong>Order No: </strong> ' . $row['id'] . '</p>
+                              <p><strong>Date: </strong> ' . $row['date'] . '</p>
+                              <p><strong>Payment Type: </strong> ' . $row['payment_type'] . '</p>
+                              <p><strong>Status: </strong> ' . ($status == 'Paused' ? 'Paused <a  data-position="bottom" data-delay="50" data-tooltip="Please contact administrator for further details." class="btn-floating waves-effect waves-light tooltipped cyan">    ?</a>' : $status) . '</p>
+                              
+                              ';
+                            echo '
+                                        <table class="table table-bordered">
+                                            <thread>
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Price</th>
+                                            </tr>
+                                        </thread>';
+                            $order_id = $row['id'];
+                            $sql1 = mysqli_query($con, "SELECT * FROM order_details WHERE order_id = $order_id;");
+                            while ($row1 = mysqli_fetch_array($sql1)) {
+                                $item_id = $row1['item_id'];
+                                $sql2 = mysqli_query($con, "SELECT * FROM items WHERE id = $item_id;");
+                                while ($row2 = mysqli_fetch_array($sql2)) {
+                                    $item_name = $row2['name'];
                                 }
-                                $sql = mysqli_query($con, "SELECT * FROM orders WHERE customer_id = $user_id AND status LIKE '$status';;");
-                                echo '              <div class="row">
-                <div>
-                    <ul id="issues-collection" class="collection">';
-                                while ($row = mysqli_fetch_array($sql)) {
-                                    $status = $row['status'];
-                                    echo '<li class="collection-item avatar">
-                              <i class="mdi-content-content-paste red circle"></i>
-                              <span class="collection-header">Order No. ' . $row['id'] . '</span>
-                              <p><strong>Date:</strong> ' . $row['date'] . '</p>
-                              <p><strong>Payment Type:</strong> ' . $row['payment_type'] . '</p>
-							  <p><strong>Address: </strong>' . $row['address'] . '</p>							  
-                              <p><strong>Status:</strong> ' . ($status == 'Paused' ? 'Paused <a  data-position="bottom" data-delay="50" data-tooltip="Please contact administrator for further details." class="btn-floating waves-effect waves-light tooltipped cyan">    ?</a>' : $status) . '</p>							  
-							  ' . (!empty($row['description']) ? '<p><strong>Note: </strong>' . $row['description'] . '</p>' : '') . '						                               
-							  <a href="#" class="secondary-content"><i class="mdi-action-grade"></i></a>
-                              </li>';
-                                    $order_id = $row['id'];
-                                    $sql1 = mysqli_query($con, "SELECT * FROM order_details WHERE order_id = $order_id;");
-                                    while ($row1 = mysqli_fetch_array($sql1)) {
-                                        $item_id = $row1['item_id'];
-                                        $sql2 = mysqli_query($con, "SELECT * FROM items WHERE id = $item_id;");
-                                        while ($row2 = mysqli_fetch_array($sql2)) {
-                                            $item_name = $row2['name'];
-                                        }
-                                        echo '<li class="collection-item">
-                            <div class="row">
-                            <div class="col s7">
-                            <p class="collections-title"><strong>#' . $row1['item_id'] . '</strong> ' . $item_name . '</p>
-                            </div>
-                            <div class="col s2">
-                            <span>' . $row1['quantity'] . ' Pieces</span>
-                            </div>
-                            <div class="col s3">
-                            <span>Rs. ' . $row1['price'] . '</span>
-                            </div>
-                            </div>
-                            </li>';
-                                        $id = $row1['order_id'];
-                                    }
-                                    echo '<li class="collection-item">
-                                        <div class="row">
-                                            <div class="col s7">
-                                                <p class="collections-title"> Total</p>
-                                            </div>
-                                            <div class="col s2">
-											<span> </span>
-                                            </div>
-                                            <div class="col s3">
-                                                <span><strong>Rs. ' . $row['total'] . '</strong></span>
-                                            </div>';
-                                    if (!preg_match('/^Cancelled/', $status)) {
-                                        if ($status != 'Delivered') {
-                                            echo '<form action="routers/cancel-order.php" method="post">
-										<input type="hidden" value="' . $id . '" name="id">
-										<input type="hidden" value="Cancelled by Customer" name="status">	
-										<input type="hidden" value="' . $row['payment_type'] . '" name="payment_type">											
-										<button class="btn waves-effect waves-light right submit" type="submit" name="action">Cancel Order
-                                              <i class="mdi-content-clear right"></i> 
-										</button>
-										</form>';
-                                        }
-                                    }
-                                    echo '</div></li>';
+                                echo '
+                                        <tbody>
+                                            <tr>
+                                                <td>' . $item_name . '</td>
+                                                <td>' . $row1['quantity'] . ' </td>
+                                                <td>Ksh ' . $row1['price'] . '</td>
+                                            <tr>
+                                        
+                                            ';
+                                $id = $row1['order_id'];
+                            }
+                            echo '
+                                        
+                                    </tbody></table> <p>Total Amount
+                                                <span><strong>Ksh ' . $row['total'] . '/=</strong></span></p>
+                                            ';
+                            if (!preg_match('/^Cancelled/', $status)) {
+                                if ($status != 'Delivered') {
+                                    echo '<form action="./../routers/cancel-order.php" method="post">
+                                                <input type="hidden" value="' . $id . '" name="id">
+                                                <input type="hidden" value="Cancelled by Customer" name="status">	
+                                                <input type="hidden" value="' . $row['payment_type'] . '" name="payment_type">											
+                                                <button class="btn btn-outline-primary w-100" type="submit" name="action">Cancel Order
+                                                </button>
+                                                </form><br>';
                                 }
-                                ?>
-                            </ul>
-                        </div>
-                    </div>
+                            }echo '</div></div><br><br>';
+                        }
+                        ?>
+
                 </div>
-            </div>
-            <!--end container-->
+            </div><br>
+        </div>
+        <!--end container-->
 
-            </section>
-            <!-- END CONTENT -->
+        </section>
+        <!-- END CONTENT -->
         </div>
         <!-- END WRAPPER -->
 
