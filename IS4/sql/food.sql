@@ -120,7 +120,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `role` varchar(15) NOT NULL DEFAULT 'Customer',
   `name` varchar(255) NOT NULL,
-  'surname' varchar(255),
+  `surname` varchar(255),
   `username` varchar(10) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(35) NULL,
