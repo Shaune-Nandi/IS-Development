@@ -1,4 +1,4 @@
-# Food Ordering System
+# Strath Cafe - Food Ordering System
 
 How To Install -
 ---------
@@ -14,4 +14,5 @@ Note -
 3. Only Customers with "Verified" status can place orders using "Cash on Delivery" option.
 4. By default a new customer gets 2000 coins in Wallet on signing up, and a fake Credit card number & CVV number is generated and stored in SQL Table "wallet_details" with corresponding new customer's ID.
 5. Use that Card Number & CVV while placing an order, else order won't be successful or use "Cash on delivery" option.
-6. What's lacking? Dynamic payment(real payment system) and error reporting lacks in this project. And also one might wish for showing corresponding food item's photo and all that stuff.
+6. All uploaded images must be in the images folder
+7. What's lacking? Dynamic payment(real payment system) and error reporting lacks in this project. And also one might wish for showing corresponding food item's photo and all that stuff.
