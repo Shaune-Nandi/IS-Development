@@ -1,4 +1,4 @@
-# Strath Cafe - Food Ordering System
+# Strath Cafe
 
 How To Install -
 ---------
